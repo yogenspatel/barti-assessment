@@ -13,3 +13,14 @@ export type CharacterProps = {
   _id?: string;
   updatedAt?: string;
 }
+
+// List of Characters model
+export interface CharacterModel {
+  info: {
+      count: number
+      nextPage: number | null
+      previousPage: number | null
+      totalPages: number
+  }
+  data: CharacterProps[] | CharacterProps
+}

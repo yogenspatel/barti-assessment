@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import LoadingIndicator from "../components/loading-indicator";
-import { CharacterProps } from "../definitions/character";
+import { CharacterModel, CharacterProps } from "../definitions/character";
 import Button from "../components/button";
+import { useParams } from "react-router";
+import axios from "axios";
+import { RenderList } from "../components/List";
 
 // STYLED CHARACTER COMPONENT
 const StyledCharacter = styled.div`
@@ -68,11 +71,28 @@ const StyledCharacter = styled.div`
 const Character = () => {
     const [characterDetails, setCharacterDetails] = useState<CharacterProps | null>(null);
     const [loading, setLoading] = useState(true);
-    let content = null;
-    let featuredFilms = null;
-    let featuredShorts = null;
-    let featuredTV = null;
+    const { id } = useParams()
 
+    useEffect(() => {
+      const getCharacter = async (id: string) => {
+        setLoading(true)
+        const response = await axios({
+          method: 'get',
+          url: `https://api.disneyapi.dev/character/${id}`
+        })
+        console.log('response: ', response.data)
+        const { data } = response.data as CharacterModel
+      setCharacterDetails(data as CharacterProps)
+      }
+      if (id?.length) {
+        getCharacter(id)
+      }
+      setLoading(false)
+    }, [id])
+
+    
+    let content = null;
+    
     // IF LOADING, SHOW LOADING SPINNER
     if (loading) {
       return <LoadingIndicator />;
@@ -89,10 +109,9 @@ const Character = () => {
           <article>
             <h3>{characterDetails?.name}</h3>
             <p>Last Updated: {characterDetails?.updatedAt}</p>
-
-            {featuredFilms}
-            {featuredShorts}
-            {featuredTV}
+            <RenderList title='Featured Films' data={characterDetails.films} />
+            <RenderList title='Short Films' data={characterDetails.shortFilms} />
+            <RenderList title='TV Shows' data={characterDetails.tvShows} />
 
             <Button href={characterDetails?.sourceUrl} label="Explore More Character Details" />
           </article>

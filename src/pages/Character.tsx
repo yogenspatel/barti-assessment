@@ -5,7 +5,7 @@ import { CharacterModel, CharacterProps } from "../definitions/character";
 import Button from "../components/button";
 import { useParams } from "react-router";
 import axios from "axios";
-import { RenderList } from "../components/List";
+import { List } from "../components/List";
 
 // STYLED CHARACTER COMPONENT
 const StyledCharacter = styled.div`
@@ -109,9 +109,9 @@ const Character = () => {
           <article>
             <h3>{characterDetails?.name}</h3>
             <p>Last Updated: {characterDetails?.updatedAt}</p>
-            <RenderList title='Featured Films' data={characterDetails.films} />
-            <RenderList title='Short Films' data={characterDetails.shortFilms} />
-            <RenderList title='TV Shows' data={characterDetails.tvShows} />
+            <List title='Featured Films' data={characterDetails.films} />
+            <List title='Short Films' data={characterDetails.shortFilms} />
+            <List title='TV Shows' data={characterDetails.tvShows} />
 
             <Button href={characterDetails?.sourceUrl} label="Explore More Character Details" />
           </article>

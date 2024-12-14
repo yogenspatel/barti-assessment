@@ -75,7 +75,7 @@ const Topbar = () => {
     if(!isResultsPage) {
       setSearchQuery('');
     }
-  }, [location]);
+  }, [location, isResultsPage]);
 
   // HANDLE SEARCH INPUT & ENTER KEY
   const onSearch = (e: React.KeyboardEvent<HTMLInputElement> ) => {
